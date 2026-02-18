@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -15,20 +16,25 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "주문 관리 시스템",
   description: "효율적인 주문 관리 시스템",
+  keywords: ["주문", "관리", "시스템", "Next.js"],
+  openGraph: {
+    title: "주문 관리 시스템",
+    description: "효율적인 주문 관리 시스템",
+    url: "https://example.com",
+    siteName: "Order Management",
+    locale: "ko_KR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="ko">
+      <body className={geistSans.className}>{children}</body>
     </html>
   );
 }

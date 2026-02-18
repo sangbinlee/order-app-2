@@ -44,17 +44,32 @@ export default function LoginPage() {
       });
       const data = await response.json();
       console.log('res=',data)
+
+
+
       if (data.success) {
         // 로그인 성공 처리
         alert('로그인 성공!');
         console.log('Login attempt:', { email, password });
 
-        //TODO: 로그인 성공 시 토큰 저장 및 리다이렉트    
+        // 토큰 저장
         localStorage.setItem('token', data.token);
-        // window.location.href = '/dashboard';
-        
-        router.push('/menu'); // 예: 주문 관리 메인 페이지로 리다이렉트
-      }
+
+        // role 값에 따라 분기
+        switch (data.user.role) {
+          case 'customer':
+            router.push('/user/menu'); // 일반 고객 → 메뉴 주문 페이지
+            break;
+          case 'admin':
+            router.push('/admin/menu'); // 관리자 → 메뉴 관리 페이지
+            break;
+          case 'superadmin':
+            router.push('/super-admin/menu'); // 수퍼관리자도 관리자 페이지로 이동 (필요시 별도 페이지 가능)
+            break;
+          default:
+            router.push('/'); // role 값이 없거나 잘못된 경우 홈으로
+        }
+      } 
       else {
         // setError(data.message || '로그인에 실패했습니다.');
         throw new Error(data.message);

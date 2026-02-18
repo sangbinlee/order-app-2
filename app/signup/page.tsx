@@ -7,6 +7,7 @@ export default function SignupPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('customer');// admin, superadmin
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState('');
@@ -19,6 +20,7 @@ export default function SignupPage() {
 
   const emailRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const roleRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +86,7 @@ console.log('....................', `${process.env.NEXT_PUBLIC_API_URL}`);
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role }),
       });
       const data = await response.json();
       if (data.success) {
@@ -145,9 +147,71 @@ console.log('....................', `${process.env.NEXT_PUBLIC_API_URL}`);
             </div>
           )}
 
+          {/* 롤 입력 */}
+          <div>
+            <label
+              htmlFor="customer"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              역할 선택
+            </label>
+
+            <div style={{display:'flex', gap:'2px', marginBottom:'10px' }}>
+              <input
+                id="customer"
+                type="radio"
+                name="role"
+                value="customer"
+                checked={role === "customer"}
+                onChange={(e) => setRole(e.target.value)}
+              />
+              <label
+                htmlFor="customer"
+                className="text-sm space-x-3"
+              >
+                Customer
+              </label>
+            </div>
+            <div style={{display:'flex', gap:'2px', marginBottom:'10px' }}>
+              <input
+                id="admin"
+                type="radio"
+                name="role"
+                value="admin"
+                checked={role === "admin"}
+                onChange={(e) => setRole(e.target.value)}
+              />
+              <label
+                htmlFor="admin"
+                className="text-sm space-x-3"
+              >
+                Admin
+              </label>
+            </div>
+            <div style={{display:'flex', gap:'2px', marginBottom:'10px' }}>
+              <input
+                id="superadmin"
+                type="radio"
+                name="role"
+                value="superadmin"
+                checked={role === "superadmin"}
+                onChange={(e) => setRole(e.target.value)}
+              />
+              <label
+                htmlFor="superadmin"
+                className="text-sm space-x-3"
+              >
+                superadmin
+              </label>
+            </div>
+          </div>
+
           {/* 이름 입력 */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               이름
             </label>
             <input
@@ -164,7 +228,10 @@ console.log('....................', `${process.env.NEXT_PUBLIC_API_URL}`);
 
           {/* 이메일 입력 */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               이메일
             </label>
             <input
@@ -181,7 +248,10 @@ console.log('....................', `${process.env.NEXT_PUBLIC_API_URL}`);
 
           {/* 비밀번호 입력 */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               비밀번호
             </label>
             <input
@@ -198,7 +268,10 @@ console.log('....................', `${process.env.NEXT_PUBLIC_API_URL}`);
 
           {/* 비밀번호 확인 입력 */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               비밀번호 확인
             </label>
             <input
@@ -222,7 +295,10 @@ console.log('....................', `${process.env.NEXT_PUBLIC_API_URL}`);
               className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
               disabled={loading}
             />
-            <label htmlFor="agreeTerms" className="ml-2 text-sm text-gray-700 cursor-pointer">
+            <label
+              htmlFor="agreeTerms"
+              className="ml-2 text-sm text-gray-700 cursor-pointer"
+            >
               이용약관에 동의합니다.
             </label>
           </div>
@@ -233,15 +309,18 @@ console.log('....................', `${process.env.NEXT_PUBLIC_API_URL}`);
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
           >
-            {loading ? '가입 중...' : '회원가입'}
+            {loading ? "가입 중..." : "회원가입"}
           </button>
         </form>
 
         {/* 로그인 링크 */}
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            이미 계정이 있으신가요?{' '}
-            <Link href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            이미 계정이 있으신가요?{" "}
+            <Link
+              href="/login"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
               로그인
             </Link>
           </p>
